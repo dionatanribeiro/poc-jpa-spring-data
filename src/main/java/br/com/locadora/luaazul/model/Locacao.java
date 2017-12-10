@@ -32,7 +32,11 @@ public class Locacao {
 
     private BigDecimal valor;
 
-    @OneToOne
+    /**
+     * O "FetchType.EAGER" é informado porque desejo que o TipoPeriodo sempre seja
+     * carregado juntamento com a Locacao
+     */
+    @OneToOne(fetch = FetchType.EAGER)
     private TipoPeriodo tipoPeriodo;
 
 }

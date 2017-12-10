@@ -1,5 +1,6 @@
 package br.com.locadora.luaazul.model;
 
+import br.com.locadora.luaazul.domain.Genero;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,8 +25,8 @@ public class Filme {
 
     private LocalDate dtLancamento;
 
-    // todo
-    // private Genero genero;
+    @Enumerated(value = EnumType.STRING)
+    private Genero genero;
 
     private Integer quantidade;
 
@@ -49,5 +50,13 @@ public class Filme {
      */
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "filme")
     private Set<Locacao> locacoes;
+
+    @ManyToMany
+    @JoinTable(
+        name = "filme_ator",
+        joinColumns = @JoinColumn(name = "filme_id"),
+        inverseJoinColumns = @JoinColumn(name = "ator_id")
+    )
+    private Set<Ator> atores;
 
 }
