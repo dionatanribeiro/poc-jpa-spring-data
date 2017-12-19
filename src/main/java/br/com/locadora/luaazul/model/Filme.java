@@ -31,7 +31,8 @@ public class Filme {
     private Integer quantidade;
 
     @Lob
-    private Byte[] capa;
+//    private Byte[] capa;
+    private String capa;
 
     /**
      * Relação de 1 para 1, onde operações para esta entidade ocorrerão em cascata junto

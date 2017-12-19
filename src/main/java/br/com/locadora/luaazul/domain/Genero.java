@@ -6,6 +6,8 @@ public enum Genero {
     ACAO,
     AVENTURA,
     COMEDIA,
+    DRAMA,
+    SCI_FI,
     ;
 
 }
