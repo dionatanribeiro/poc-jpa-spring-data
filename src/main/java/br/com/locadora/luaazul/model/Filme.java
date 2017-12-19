@@ -52,6 +52,12 @@ public class Filme {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "filme")
     private Set<Locacao> locacoes;
 
+    /**
+     * Em uma relação de muitos para muitos é possível criar uma tabela dinamicamente
+     * utilizando `@JoinTable`, onde é informado o nome da tabela, a "joinColumns" onde é
+     * informado o id da entidade local, juntamente com o nome e a "inverseJoinColumns" onde
+     * é mapeado pelo id da segunda entidade
+     */
     @ManyToMany
     @JoinTable(
         name = "filme_ator",

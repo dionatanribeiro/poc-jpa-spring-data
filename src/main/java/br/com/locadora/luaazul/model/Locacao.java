@@ -20,6 +20,7 @@ public class Locacao {
     /**
      * Uma locação é referente a apenas um filme.
      * Não queremos uma operação de delete em cascata removendo o Filme, apenas a locação.
+     * Portanto a operação em cascata não é informada.
      */
     @ManyToOne
     private Filme filme;

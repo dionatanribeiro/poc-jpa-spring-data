@@ -19,6 +19,10 @@ public class Ator {
 
     private String nome;
 
+    /**
+     * Com o mappedBy é delegado a configuração da tabela de relação n-n para a propriedade
+     * "atores" da Entidade "Filme"
+     */
     @ManyToMany(mappedBy = "atores")
     private Set<Filme> filmes;
 
