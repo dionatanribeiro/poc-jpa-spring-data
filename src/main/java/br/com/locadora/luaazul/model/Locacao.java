@@ -35,7 +35,7 @@ public class Locacao {
 
     /**
      * O "FetchType.EAGER" é informado porque desejo que o TipoPeriodo sempre seja
-     * carregado juntamento com a Locacao
+     * carregado juntamente com a Locacao
      */
     @OneToOne(fetch = FetchType.EAGER)
     private TipoPeriodo tipoPeriodo;
