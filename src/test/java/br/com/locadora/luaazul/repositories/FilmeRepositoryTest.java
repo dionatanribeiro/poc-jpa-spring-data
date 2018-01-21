@@ -21,6 +21,9 @@ public class FilmeRepositoryTest extends AbstractTest {
     @Autowired
     private FilmeRepository repository;
 
+    @Autowired
+    private LocacaoRepository locacaoRepository;
+
     @Test
     public void whenInsertFilme() {
         // Arrange
@@ -144,19 +147,27 @@ public class FilmeRepositoryTest extends AbstractTest {
         repository.save(filme);
 
         // cria locacao
-        Locacao locacao = new Locacao();
-        locacao.setDtLimiteEntrega(LocalDate.now());
         TipoPeriodo tipoPeriodo = new TipoPeriodo();
         tipoPeriodo.setId(1L);
+
+        Locacao locacao = new Locacao();
+        locacao.setDtLimiteEntrega(LocalDate.now());
         locacao.setTipoPeriodo(tipoPeriodo);
         locacao.setValor(new BigDecimal("100"));
         filme.addLocacao(locacao);
+
+        Locacao locacao2 = new Locacao();
+        locacao2.setDtLimiteEntrega(LocalDate.now());
+        locacao2.setTipoPeriodo(tipoPeriodo);
+        locacao2.setValor(new BigDecimal("125"));
+        filme.addLocacao(locacao2);
 
         // Act
         repository.save(filme);
 
         // Assert
         Assert.assertNotNull(filme.getLocacoes().stream().findFirst().get().getId());
+        Assert.assertEquals(2, locacaoRepository.count());
     }
 
 }
