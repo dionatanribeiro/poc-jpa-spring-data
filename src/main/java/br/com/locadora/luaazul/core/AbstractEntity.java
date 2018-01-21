@@ -1,4 +1,4 @@
-package br.com.locadora.luaazul.model;
+package br.com.locadora.luaazul.core;
 
 public abstract class AbstractEntity<T> {
 
