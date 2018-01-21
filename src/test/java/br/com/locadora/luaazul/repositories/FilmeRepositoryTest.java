@@ -59,7 +59,6 @@ public class FilmeRepositoryTest extends AbstractTest {
         // Assert
         Assert.assertNotNull("Id não deve ser nulo", filme.getId());
         Assert.assertNotNull("Id da tabela filha não deve ser nulo", filme.getSinopse().getId());
-        Assert.assertSame("FK da tabela filha é o mesmo da tabela pai", filme.getId(), filme.getSinopse().getFilme().getId());
     }
 
     @Test
