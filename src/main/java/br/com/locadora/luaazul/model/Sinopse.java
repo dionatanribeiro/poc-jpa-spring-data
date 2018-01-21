@@ -1,16 +1,17 @@
 package br.com.locadora.luaazul.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Data
-@AllArgsConstructor
+@EqualsAndHashCode(exclude = {"filme"})
+@ToString(exclude = {"filme"})
 @NoArgsConstructor
-public class Sinopse {
+@AllArgsConstructor
+@Builder
+public class Sinopse {//extends AbstractEntity<Long> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +28,8 @@ public class Sinopse {
      * Em uma operação de delete de Sinopse não é necessário informar o tipo de cascade
      * porque não é interessante por exemplo excluir o Filme junto com este registro.
      */
-    @OneToOne
+    @OneToOne(mappedBy = "sinopse")
+    @JoinColumn(name = "filmeId")
     private Filme filme;
 
 }

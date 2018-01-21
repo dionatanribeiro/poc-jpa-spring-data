@@ -1,19 +1,21 @@
 package br.com.locadora.luaazul.model;
 
 import br.com.locadora.luaazul.domain.Genero;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Data
-@AllArgsConstructor
+@EqualsAndHashCode(exclude = {"locacao", "atores", "sinopse"})
+@ToString(exclude = {"locacao", "atores", "sinopse"})
 @NoArgsConstructor
-public class Filme {
+@AllArgsConstructor
+@Builder
+public class Filme {//extends AbstractEntity<Long> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,7 +32,7 @@ public class Filme {
 
     private Integer quantidade;
 
-    @Lob
+//    @Lob
 //    private Byte[] capa;
     private String capa;
 
@@ -39,7 +41,8 @@ public class Filme {
      * com a entidade relacionada, por exemplo ao excluir a entidade Filme, a entidade
      * Sinopse será excluída junta.
      */
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "sinopseId")
     private Sinopse sinopse;
 
     /**
@@ -61,9 +64,43 @@ public class Filme {
     @ManyToMany
     @JoinTable(
         name = "filme_ator",
-        joinColumns = @JoinColumn(name = "filme_id"),
-        inverseJoinColumns = @JoinColumn(name = "ator_id")
+        joinColumns = @JoinColumn(name = "filme_id", table = "filme", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "ator_id", table = "ator", referencedColumnName = "id")
     )
     private Set<Ator> atores;
+
+    /**
+     * Método conveniente para adicionar locação
+     */
+    public void addLocacao(Locacao novaLocacao) {
+
+        // verifica se a lista ainda não foi instanciada
+        if (this.locacoes == null) {
+            this.locacoes = new HashSet<>();
+        }
+
+        // adiciona item a lista
+        this.locacoes.add(novaLocacao);
+
+        // relaciona parent
+        novaLocacao.setFilme(this);
+    }
+
+    /**
+     * Método conveniente para adicionar ator
+     */
+    public void addAtor(Ator novoAtor) {
+
+        // verifica se a lista ainda não foi instanciada
+        if (this.atores == null) {
+            this.atores = new HashSet<>();
+        }
+
+        // adiciona item a lista
+        this.atores.add(novoAtor);
+
+        // relaciona parent
+        novoAtor.addFilme(this);
+    }
 
 }

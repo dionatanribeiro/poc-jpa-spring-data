@@ -1,14 +1,15 @@
 package br.com.locadora.luaazul.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Data
+@EqualsAndHashCode(exclude = {"filmes"})
+@ToString(exclude = {"filme"})
 @AllArgsConstructor
 @NoArgsConstructor
 public class Ator {
@@ -25,5 +26,16 @@ public class Ator {
      */
     @ManyToMany(mappedBy = "atores")
     private Set<Filme> filmes;
+
+    /**
+     * Método conveniente para adicionar filme
+     */
+    public void addFilme(Filme filme) {
+        if (this.filmes == null) {
+            this.filmes = new HashSet<>();
+        }
+        this.filmes.add(filme);
+        filme.addAtor(this);
+    }
 
 }
