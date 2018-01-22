@@ -67,26 +67,13 @@ public class FilmeRepositoryTest extends AbstractTest {
     @Test
     public void quandoBuscaFilmeComSinopse() {
         // Arrange
-        Filme filme = Filme.builder()
-                .nome("Inception")
-                .capa("inception.jpg")
-                .dtLancamento(LocalDate.now())
-                .duracao(145)
-                .genero(Genero.SCI_FI)
-                .quantidade(5)
-                .sinopse(Sinopse.builder().sinopseFilme("Info do filme").build())
-                .build();
-        repository.save(filme);
+        Long theId = 1L;
 
         // Act
-        Optional<Filme> filmeOptional = repository.findById(1L);
-
-        System.out.println(filmeOptional.get());
-        System.out.println("#########################");
-        System.out.println(filmeOptional.get().getSinopse());
+        Optional<Filme> filmeOptional = repository.findById(theId);
 
         // Assert
-//        Assert.assertSame("FK da tabela filha é o mesmo da tabela pai", filmeOptional.get().getId(), filmeOptional.get().getSinopse().getFilme().getId());
+        Assert.assertSame("FK da tabela filha é o mesmo da tabela pai", filmeOptional.get().getId(), filmeOptional.get().getSinopse().getFilme().getId());
     }
 
     @Test

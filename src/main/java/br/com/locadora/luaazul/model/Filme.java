@@ -10,8 +10,8 @@ import java.util.Set;
 
 @Entity
 @Data
-@EqualsAndHashCode(exclude = {"locacao", "atores", "sinopse"})
-@ToString(exclude = {"locacao", "atores", "sinopse"})
+@EqualsAndHashCode(exclude = {"locacoes", "atores", "sinopse"})
+@ToString(exclude = {"locacoes", "atores", "sinopse"})
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

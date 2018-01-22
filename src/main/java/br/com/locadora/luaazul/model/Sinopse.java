@@ -21,14 +21,14 @@ public class Sinopse {//extends AbstractEntity<Long> {
      * Anotação necessária para mapear a coluna para o tipo CLOB, permitindo persistir
      * uma string com tamanho acima do padrão que é varchar(255)
      */
-    @Lob
+//    @Lob
     private String sinopseFilme;
 
     /**
      * Em uma operação de delete de Sinopse não é necessário informar o tipo de cascade
      * porque não é interessante por exemplo excluir o Filme junto com este registro.
      */
-    @OneToOne(mappedBy = "sinopse")
+    @OneToOne(mappedBy = "sinopse", fetch = FetchType.LAZY)
     @JoinColumn(name = "filmeId")
     private Filme filme;
 
