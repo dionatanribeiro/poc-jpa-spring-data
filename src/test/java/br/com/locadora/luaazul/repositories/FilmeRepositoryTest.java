@@ -4,6 +4,8 @@ import br.com.locadora.luaazul.domain.Genero;
 import br.com.locadora.luaazul.model.*;
 import br.com.locadora.luaazul.projections.FilmeOnlyNomeEDuracao;
 import br.com.locadora.luaazul.projections.FilmeProjection;
+import org.hamcrest.CoreMatchers;
+import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,6 +76,25 @@ public class FilmeRepositoryTest extends AbstractTest {
 
         // Assert
         Assert.assertSame("FK da tabela filha é o mesmo da tabela pai", filmeOptional.get().getId(), filmeOptional.get().getSinopse().getFilme().getId());
+    }
+
+    @Test
+    public void quandoDeletaFilme() {
+        // Arrange
+        Long theId = 1L;
+
+        Filme filme = repository.findById(theId).get();
+        filme.setSinopse(null);
+        repository.save(filme);
+
+        long countAntes = repository.count();
+
+        // Act
+        repository.deleteById(theId);
+        long countDepois = repository.count();
+
+        // Assert
+        Assert.assertThat(countDepois, Matchers.lessThan(countAntes));
     }
 
     @Test
@@ -188,6 +209,10 @@ public class FilmeRepositoryTest extends AbstractTest {
 
         System.out.println("Testa remoção de um ator do filme e commita entidade Filme");
         filme.getAtores().remove(ator2);
+        repository.flush();
+
+        System.out.println("Deleta o ultimo filme adicionado");
+        repository.delete(filme);
         repository.flush();
     }
 

@@ -41,7 +41,7 @@ public class Filme {//extends AbstractEntity<Long> {
      * com a entidade relacionada, por exemplo ao excluir a entidade Filme, a entidade
      * Sinopse será excluída junta.
      */
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name = "sinopseId")
     private Sinopse sinopse;
 
@@ -100,9 +100,6 @@ public class Filme {//extends AbstractEntity<Long> {
 
         // adiciona item a lista
         this.atores.add(novoAtor);
-
-        // relaciona parent
-//        novoAtor.addFilme(this);
     }
 
 }
