@@ -28,7 +28,7 @@ public class Sinopse {//extends AbstractEntity<Long> {
      * Em uma operação de delete de Sinopse não é necessário informar o tipo de cascade
      * porque não é interessante por exemplo excluir o Filme junto com este registro.
      */
-    @OneToOne(mappedBy = "sinopse", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "sinopse", fetch = FetchType.EAGER)
     @JoinColumn(name = "filmeId")
     private Filme filme;
 

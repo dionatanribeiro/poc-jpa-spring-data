@@ -52,7 +52,7 @@ public class Filme {//extends AbstractEntity<Long> {
      * Ao excluir um filme é importante excluir juntamente seu histórico
      * Dentro da entidade locacao, o filme deverá ser mapeado para o campo chamado "filme"
      */
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "filme")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "filme", fetch = FetchType.LAZY)
     private Set<Locacao> locacoes;
 
     /**
@@ -61,11 +61,13 @@ public class Filme {//extends AbstractEntity<Long> {
      * informado o id da entidade local, juntamente com o nome e a "inverseJoinColumns" onde
      * é mapeado pelo id da segunda entidade
      */
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {
+            CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH
+    })
     @JoinTable(
         name = "filme_ator",
-        joinColumns = @JoinColumn(name = "filme_id", table = "filme", referencedColumnName = "id"),
-        inverseJoinColumns = @JoinColumn(name = "ator_id", table = "ator", referencedColumnName = "id")
+        joinColumns = @JoinColumn(name = "filme_id"),
+        inverseJoinColumns = @JoinColumn(name = "ator_id")
     )
     private Set<Ator> atores;
 
@@ -100,7 +102,7 @@ public class Filme {//extends AbstractEntity<Long> {
         this.atores.add(novoAtor);
 
         // relaciona parent
-        novoAtor.addFilme(this);
+//        novoAtor.addFilme(this);
     }
 
 }

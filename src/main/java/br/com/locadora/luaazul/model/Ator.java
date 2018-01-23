@@ -8,8 +8,9 @@ import java.util.Set;
 
 @Entity
 @Data
+@Builder
 @EqualsAndHashCode(exclude = {"filmes"})
-@ToString(exclude = {"filme"})
+@ToString(exclude = {"filmes"})
 @AllArgsConstructor
 @NoArgsConstructor
 public class Ator {
@@ -24,18 +25,7 @@ public class Ator {
      * Com o mappedBy é delegado a configuração da tabela de relação n-n para a propriedade
      * "atores" da Entidade "Filme"
      */
-    @ManyToMany(mappedBy = "atores")
+    @ManyToMany(mappedBy = "atores", fetch = FetchType.LAZY)
     private Set<Filme> filmes;
-
-    /**
-     * Método conveniente para adicionar filme
-     */
-    public void addFilme(Filme filme) {
-        if (this.filmes == null) {
-            this.filmes = new HashSet<>();
-        }
-        this.filmes.add(filme);
-        filme.addAtor(this);
-    }
 
 }

@@ -1,10 +1,7 @@
 package br.com.locadora.luaazul.repositories;
 
 import br.com.locadora.luaazul.domain.Genero;
-import br.com.locadora.luaazul.model.Filme;
-import br.com.locadora.luaazul.model.Locacao;
-import br.com.locadora.luaazul.model.Sinopse;
-import br.com.locadora.luaazul.model.TipoPeriodo;
+import br.com.locadora.luaazul.model.*;
 import br.com.locadora.luaazul.projections.FilmeOnlyNomeEDuracao;
 import br.com.locadora.luaazul.projections.FilmeProjection;
 import org.junit.Assert;
@@ -23,6 +20,9 @@ public class FilmeRepositoryTest extends AbstractTest {
 
     @Autowired
     private LocacaoRepository locacaoRepository;
+
+    @Autowired
+    private AtorRepository atorRepository;
 
     @Test
     public void whenInsertFilme() {
@@ -120,8 +120,38 @@ public class FilmeRepositoryTest extends AbstractTest {
     @Test
     public void quandoAdicionaLocacaoAoFilme() {
         // Arrange
+        Long theId = 1L;
+        Filme filme = repository.findById(theId).get();
 
-        // cria filme
+        TipoPeriodo tipoPeriodo = new TipoPeriodo();
+        tipoPeriodo.setId(1L);
+
+        Locacao locacao = Locacao.builder()
+                .dtLimiteEntrega(LocalDate.now())
+                .tipoPeriodo(tipoPeriodo)
+                .valor(new BigDecimal("100"))
+                .build();
+        filme.addLocacao(locacao);
+
+        Locacao locacao2 = Locacao.builder()
+                .dtLimiteEntrega(LocalDate.now())
+                .tipoPeriodo(tipoPeriodo)
+                .valor(new BigDecimal("125"))
+                .build();
+        filme.addLocacao(locacao2);
+
+        // Act
+        repository.save(filme);
+        System.out.println(filme.getLocacoes());
+
+        // Assert
+        Assert.assertNotNull(filme.getLocacoes().stream().findFirst().get().getId());
+        Assert.assertEquals(2, locacaoRepository.count());
+    }
+
+    @Test
+    public void quandoVinculaAtoresAoFilme() {
+        // Arrange
         Filme filme = Filme.builder()
                 .nome("Inception")
                 .capa("inception.jpg")
@@ -132,29 +162,28 @@ public class FilmeRepositoryTest extends AbstractTest {
                 .sinopse(Sinopse.builder().sinopseFilme("Info do filme").build())
                 .build();
         repository.save(filme);
+        System.out.println("Filme salvo: " + filme);
 
-        // cria locacao
-        TipoPeriodo tipoPeriodo = new TipoPeriodo();
-        tipoPeriodo.setId(1L);
+        Ator ator = Ator.builder()
+                .nome("Leonador DiCaprio")
+                .build();
+        atorRepository.save(ator);
+        System.out.println("Ator salvo: " + ator);
 
-        Locacao locacao = new Locacao();
-        locacao.setDtLimiteEntrega(LocalDate.now());
-        locacao.setTipoPeriodo(tipoPeriodo);
-        locacao.setValor(new BigDecimal("100"));
-        filme.addLocacao(locacao);
+        Ator ator2 = Ator.builder()
+                .nome("Ellen Page")
+                .build();
+        atorRepository.save(ator2);
+        System.out.println("Ator salvo: " + ator2);
 
-        Locacao locacao2 = new Locacao();
-        locacao2.setDtLimiteEntrega(LocalDate.now());
-        locacao2.setTipoPeriodo(tipoPeriodo);
-        locacao2.setValor(new BigDecimal("125"));
-        filme.addLocacao(locacao2);
+        System.out.println("Vinculando atores ao filme...");
 
-        // Act
-        repository.save(filme);
-
-        // Assert
-        Assert.assertNotNull(filme.getLocacoes().stream().findFirst().get().getId());
-        Assert.assertEquals(2, locacaoRepository.count());
+        filme.addAtor(ator);
+        filme.addAtor(ator2);
+        // Aqui é utilizado o "flush" para realizar um commit em alteações pendentes
+        // nas entidades, ao fazer isso ele vai inserir o vinculo dos atores na tabela de
+        // N-N
+        repository.flush();
     }
 
 }

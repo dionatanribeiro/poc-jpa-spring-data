@@ -8,6 +8,7 @@ import java.time.LocalDate;
 
 @Entity
 @Data
+@Builder
 @EqualsAndHashCode(exclude = {"filme", "tipoPeriodo"})
 @ToString(exclude = {"filme", "tipoPeriodo"})
 @AllArgsConstructor
@@ -22,7 +23,7 @@ public class Locacao {
      * Não queremos uma operação de delete em cascata removendo o Filme, apenas a locação.
      * Portanto a operação em cascata não é informada.
      */
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Filme filme;
 
     // todo
