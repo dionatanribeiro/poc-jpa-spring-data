@@ -182,7 +182,12 @@ public class FilmeRepositoryTest extends AbstractTest {
         filme.addAtor(ator2);
         // Aqui é utilizado o "flush" para realizar um commit em alteações pendentes
         // nas entidades, ao fazer isso ele vai inserir o vinculo dos atores na tabela de
-        // N-N
+        // N-N, é importante notar que o repositório utilizado para o flush é o da entidade
+        // "Filme", as alterações pendentes nesta transação serão feitas apenas para esta tabela.
+        repository.flush();
+
+        System.out.println("Testa remoção de um ator do filme e commita entidade Filme");
+        filme.getAtores().remove(ator2);
         repository.flush();
     }
 
